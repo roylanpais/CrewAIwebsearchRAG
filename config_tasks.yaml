@@ -80,10 +80,9 @@ tasks:
       Use RAG techniques to enhance information about: {query}
       
       Process:
-      - Retrieve relevant information from multiple sources
+      - Retrieve relevant information from the files in the directory
       - Augment with contextual knowledge
       - Provide enhanced insights and connections
-      - Synthesize information from context provided by other agents
     expected_output: |
       RAG-enhanced analysis including:
       - Augmented information with deeper context
