@@ -9,7 +9,7 @@ from dataclasses import dataclass
 # CrewAI imports
 from crewai import Agent, Task, Crew, Process, LLM
 from crewai.tools import BaseTool
-from crewai_tools import ScrapeWebsiteTool, SerperDevTool
+from crewai_tools import ScrapeWebsiteTool, SerperDevTool, RagTool
 
 # Pydantic for input validation
 from pydantic import BaseModel, Field
@@ -126,39 +126,8 @@ class WikipediaTool(BaseTool):
         except Exception as e:
             return f"Error searching Wikipedia: {str(e)}"
 
-class RAGToolInput(BaseModel):
-    """Input schema for RAG Tool"""
-    query: str = Field(..., description="Query to search in knowledge base")
-    context: str = Field(default="", description="Additional context for the query")
-
-class CustomRAGTool(BaseTool):
-    """Simple RAG implementation using web search and context"""
-    name: str = "RAG Knowledge Tool"
-    description: str = "Retrieval-Augmented Generation tool for enhanced information retrieval"
-    args_schema: type[BaseModel] = RAGToolInput
-
-    def _run(self, query: str, context: str = "") -> str:
-        """Perform RAG using web search and context augmentation"""
-        try:
-            # Use Serper for web search
-            search_tool = SerperDevTool()
-            search_results = search_tool._run(query)
-            
-            # Combine context with search results
-            rag_response = f"""
-            RAG Enhanced Response for: {query}
-            
-            Context: {context if context else "No additional context provided"}
-            
-            Retrieved Information:
-            {search_results}
-            
-            This information has been retrieved and augmented to provide comprehensive context.
-            """
-            
-            return rag_response.strip()
-        except Exception as e:
-            return f"Error in RAG processing: {str(e)}"
+rag_tool = RagTool()
+rag_tool.add(data_type="directory", path="./ragdata")
 
 # ====================
 # AGENT DEFINITIONS
@@ -216,9 +185,9 @@ def create_agents(llm):
     rag_agent = Agent(
         role="Knowledge Retrieval Specialist",
         goal="Provide enhanced information using retrieval-augmented generation techniques",
-        backstory="You specialize in retrieving relevant information from various sources "
+        backstory="You specialize in retrieving relevant information from various the RAG tool documents "
                  "and augmenting it with contextual knowledge to provide comprehensive answers.",
-        tools=[CustomRAGTool()],
+        tools=[rag_tool],
         llm=llm,
         verbose=True,
         allow_delegation=False
