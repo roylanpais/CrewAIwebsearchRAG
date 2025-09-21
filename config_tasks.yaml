@@ -1,0 +1,113 @@
+tasks:
+  web_search_task:
+    description: |
+      Search the web comprehensively for information about: {query}
+      
+      Requirements:
+      - Find the most current and relevant information
+      - Include authoritative sources
+      - Provide diverse perspectives
+      - Focus on factual, verifiable information
+      
+      Search Strategy:
+      1. Use specific keywords related to the query
+      2. Look for recent news and updates
+      3. Find expert opinions and analysis
+      4. Identify trending discussions
+    expected_output: |
+      Comprehensive search results including:
+      - Current information and recent developments
+      - Authoritative sources and references
+      - Key facts and statistics
+      - Different perspectives on the topic
+    agent: "web_search"
+
+  weather_task:
+    description: |
+      Provide comprehensive weather information for: {location}
+      
+      Include:
+      - Current weather conditions
+      - Temperature details (actual and feels-like)
+      - Weather description and conditions
+      - Humidity, pressure, and wind information
+      - Visibility and other relevant metrics
+    expected_output: |
+      Complete weather report including:
+      - Current conditions with detailed measurements
+      - Weather description and atmospheric conditions
+      - All relevant meteorological data
+      - Location-specific information
+    agent: "weather_expert"
+
+  wikipedia_task:
+    description: |
+      Research and provide detailed Wikipedia information about: {query}
+      
+      Research approach:
+      - Find the most relevant Wikipedia articles
+      - Extract key information and summaries
+      - Provide article URLs for reference
+      - Include related topics if main topic not found
+    expected_output: |
+      Wikipedia research results including:
+      - Article title and summary
+      - Key information and facts
+      - Source URLs for verification
+      - Related topics if applicable
+    agent: "wikipedia_researcher"
+
+  comprehensive_research:
+    description: |
+      Conduct comprehensive multi-source research on: {query}
+      
+      This task involves:
+      1. Web search for current information
+      2. Wikipedia research for foundational knowledge
+      3. RAG-enhanced analysis combining all sources
+      
+      Provide a complete analysis covering all aspects of the topic.
+    expected_output: |
+      Comprehensive research report including:
+      - Current web-based information
+      - Historical and foundational knowledge from Wikipedia
+      - Enhanced analysis using RAG techniques
+      - Synthesized insights from multiple sources
+    agent: "manager"
+
+  rag_enhancement:
+    description: |
+      Use RAG techniques to enhance information about: {query}
+      
+      Process:
+      - Retrieve relevant information from multiple sources
+      - Augment with contextual knowledge
+      - Provide enhanced insights and connections
+      - Synthesize information from context provided by other agents
+    expected_output: |
+      RAG-enhanced analysis including:
+      - Augmented information with deeper context
+      - Connections between different sources
+      - Enhanced insights and analysis
+      - Comprehensive synthesis of available knowledge
+    agent: "rag_specialist"
+    context: ["web_search_task", "wikipedia_task"]
+
+  manager_coordination:
+    description: |
+      Analyze the user request: {query}
+      
+      Coordination tasks:
+      - Determine which agents are needed
+      - Coordinate agent activities
+      - Ensure comprehensive coverage
+      - Synthesize results from multiple agents
+      
+      Delegate to appropriate specialized agents based on the query type.
+    expected_output: |
+      Coordinated response including:
+      - Analysis of user requirements
+      - Results from appropriate specialized agents
+      - Synthesized comprehensive answer
+      - Clear, well-structured final response
+    agent: "manager"

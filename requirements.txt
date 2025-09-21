@@ -1,0 +1,24 @@
+# Core framework
+crewai>=0.63.0
+crewai-tools>=0.12.0
+streamlit>=1.28.0
+
+# LLM integration
+google-generativeai>=0.7.0
+langchain-google-genai>=1.0.0
+
+# API integrations
+requests>=2.31.0
+wikipediaapi>=0.6.0
+
+# Data handling
+pandas>=2.0.0
+pydantic>=2.4.0
+
+# Production deployment
+gunicorn>=21.2.0
+python-dotenv>=1.0.0
+
+# Optional for enhanced features
+plotly>=5.17.0
+altair>=5.1.0
