@@ -13,7 +13,8 @@ from crewai_tools import ScrapeWebsiteTool, SerperDevTool, RagTool
 
 # Pydantic for input validation
 from pydantic import BaseModel, Field
-
+from dotenv import load_dotenv
+load_dotenv()
 # ====================
 # CONFIGURATION
 # ====================
@@ -21,8 +22,10 @@ from pydantic import BaseModel, Field
 class AppConfig:
     """Application configuration"""
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+    GEMINI_MODEL_NAME = os.getenv("GEMINI_MODEL_NAME", "") 
+
     SERPER_API_KEY = os.getenv("SERPER_API_KEY", "")
-    WEATHER_API_KEY = os.getenv("WEATHER_API_KEY", "")  # OpenWeatherMap API key
+    WEATHER_API_KEY = os.getenv("WEATHER_API_KEY", "") 
     
     @classmethod
     def validate_keys(cls):
@@ -136,7 +139,7 @@ rag_tool.add(data_type="directory", path="./ragdata")
 def setup_llm():
     """Setup Gemini LLM"""
     return LLM(
-        model="gemini/gemini-1.5-pro",
+        model=AppConfig.GEMINI_MODEL_NAME,
         api_key=AppConfig.GEMINI_API_KEY,
         temperature=0.7
     )
